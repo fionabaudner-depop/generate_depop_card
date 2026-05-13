@@ -1,0 +1,295 @@
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--colour-background-base);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  width: 100%;
+  height: 249px;
+  background: linear-gradient(180deg, var(--gradient-hero-from) 0%, var(--gradient-hero-to) 100%);
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.heroCardWrap {
+  position: relative;
+  width: 201px;
+  height: 185px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: heroFloat 4s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(0deg);
+  }
+}
+
+.heroCardImg {
+  width: 201px;
+  height: 151px;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 18px rgba(40, 50, 90, 0.18));
+}
+
+.heroShadow {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(20, 30, 70, 0.18), transparent 70%);
+  filter: blur(2px);
+}
+
+/* ---------- Body ---------- */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0 0 0;
+  overflow-y: auto;
+}
+
+.title {
+  margin: 0 16px 16px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-xl);
+  line-height: var(--line-36);
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background: transparent;
+  margin-bottom: 4px;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  padding: 0 16px;
+}
+
+.row {
+  display: flex;
+  gap: var(--space-400);
+}
+
+.card {
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--colour-surface-primary-inverted);
+  border: 1px solid var(--colour-border-card-weak);
+  border-radius: var(--radius-small);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 131px;
+  transition:
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  position: relative;
+  animation: cardIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card:active {
+  transform: scale(0.985);
+}
+
+.card:hover {
+  border-color: #c8c8c8;
+}
+
+.cardSelected {
+  border-color: var(--colour-border-data-base);
+  box-shadow: 0 0 0 1px var(--colour-border-data-base) inset;
+}
+
+.cardSelected:hover {
+  border-color: var(--colour-border-data-base);
+}
+
+.cardImageWrap {
+  width: 59px;
+  height: 59px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cardLabel {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  line-height: var(--line-20);
+  letter-spacing: 0.012em;
+  color: #101828;
+  text-align: center;
+  margin: 0;
+  width: 100%;
+}
+
+/* ---------- Help me choose row ---------- */
+.helpCard {
+  background: var(--colour-surface-primary-inverted);
+  border: 1px solid var(--colour-border-card-weak);
+  border-radius: var(--radius-small);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  transition:
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  animation: cardIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 200ms both;
+}
+
+.helpCard:hover {
+  border-color: #c8c8c8;
+}
+
+.helpCard:active {
+  transform: scale(0.99);
+}
+
+.helpCardSelected {
+  border-color: var(--colour-border-data-base);
+  box-shadow: 0 0 0 1px var(--colour-border-data-base) inset;
+}
+
+.helpIcon {
+  width: 41px;
+  height: 41px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.helpIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.helpText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.helpTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  line-height: var(--line-20);
+  color: #101828;
+  letter-spacing: 0.012em;
+}
+
+.helpSubtitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--font-size-xs);
+  line-height: var(--line-16);
+  color: var(--colour-text-primary-subtle);
+}
+
+/* ---------- Bottom CTA ---------- */
+.cta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 30%);
+  padding: 16px 16px 34px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+.ctaButton {
+  width: 100%;
+  background: var(--colour-surface-button-primary-enabled);
+  color: var(--colour-text-button-primary);
+  border-radius: var(--radius-pill);
+  padding: 12px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-20);
+  letter-spacing: 0.012em;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease,
+    background 0.18s ease;
+}
+
+.ctaButton:active {
+  transform: scale(0.985);
+}
+
+.ctaButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Pad the scrollable body so the CTA never covers cards */
+.bodySpacer {
+  height: 110px;
+  flex-shrink: 0;
+}

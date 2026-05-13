@@ -1,0 +1,252 @@
+/*
+ * Result / Confirmation screen.
+ * Avatar-reveal vibe: a glowing pedestal with the card as the hero element,
+ * a single vibe name underneath, and a single "Save" CTA.
+ */
+
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(
+      80% 60% at 50% 40%,
+      var(--screen-glow, rgba(255, 35, 0, 0.18)) 0%,
+      rgba(255, 255, 255, 0) 70%
+    ),
+    linear-gradient(180deg, #fbf6f1 0%, #e2e8f7 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Reserve room for the absolute StatusBar. */
+.statusBarSpacer {
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.navRow {
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 4px 16px;
+}
+
+.closeBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--colour-text-primary-base);
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(38, 38, 38, 0.06);
+}
+
+.closeBtn:active {
+  transform: scale(0.92);
+}
+
+/* Hero stage with the avatar card. */
+.stage {
+  flex: 1 1 0;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pedestal {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The radial halo behind the card — coloured per vibe. */
+.halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, var(--avatar-glow, rgba(255, 35, 0, 0.55)) 0%, rgba(255, 255, 255, 0) 70%);
+  filter: blur(2px);
+  animation: haloPulse 3.6s ease-in-out infinite;
+}
+
+@keyframes haloPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.85;
+  }
+}
+
+/* Spinning conic ring like a loot frame. */
+.ring {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--avatar-ring, rgba(255, 35, 0, 0.85)) 90deg,
+    transparent 180deg,
+    var(--avatar-ring, rgba(255, 35, 0, 0.85)) 270deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  animation: ringSpin 8s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes ringSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Static inner ring for a crisper frame. */
+.ringInner {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    inset 0 0 30px rgba(255, 255, 255, 0.35),
+    0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* The actual card is rendered by CardLayer at the page level (so it can persist
+   and morph into the balance card). This component handles only the framing. */
+
+/* Particle sparkles around the avatar. */
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--avatar-sparkle, #ffffff);
+  box-shadow: 0 0 8px 1px var(--avatar-sparkle, #ffffff);
+  opacity: 0;
+  animation: sparkle 2.4s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Vibe label */
+.label {
+  text-align: center;
+  padding: 0 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: labelIn 0.6s ease 0.5s both;
+}
+
+@keyframes labelIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vibeName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 36px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+.tagline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-subtle);
+  max-width: 280px;
+}
+
+/* CTA */
+.cta {
+  padding: 8px 16px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.primary {
+  width: 100%;
+  background: var(--colour-surface-button-primary-enabled);
+  color: var(--colour-text-button-primary);
+  border-radius: var(--radius-pill);
+  padding: 12px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-20);
+  letter-spacing: 0.012em;
+  transition: transform 0.18s ease;
+}
+
+.primary:active {
+  transform: scale(0.985);
+}
+
+.secondary {
+  width: 100%;
+  background: transparent;
+  color: var(--colour-text-primary-base);
+  border-radius: var(--radius-pill);
+  padding: 12px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-20);
+  letter-spacing: 0.012em;
+  transition: background 0.18s ease;
+}
+
+.secondary:hover {
+  background: rgba(38, 38, 38, 0.06);
+}
+
+.secondary:active {
+  background: rgba(38, 38, 38, 0.1);
+}

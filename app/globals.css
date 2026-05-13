@@ -1,0 +1,85 @@
+/* ---------- Depop / Thrift tokens (subset used in this prototype) ---------- */
+:root {
+  /* Colour */
+  --colour-background-base: #ffffff;
+  --colour-surface-primary-base: #262626;
+  --colour-surface-primary-inverted: #ffffff;
+  --colour-surface-primary-weak: #f6f6f6;
+  --colour-surface-button-primary-enabled: #262626;
+  --colour-text-primary-base: #262626;
+  --colour-text-primary-subtle: #747474;
+  --colour-text-button-primary: #ffffff;
+  --colour-border-card-weak: #e3e3e3;
+  --colour-border-data-base: #e20020;
+  --colour-border-divider-weak: #e3e3e3;
+  --colour-brand-depop-red: #ff2300;
+
+  /* Hero gradient (Secondary gradient / Blue) */
+  --gradient-hero-from: #fbf6f1;
+  --gradient-hero-to: #e2e8f7;
+
+  /* Spacing */
+  --space-100: 4px;
+  --space-200: 8px;
+  --space-300: 12px;
+  --space-400: 16px;
+  --space-600: 24px;
+  --space-800: 32px;
+
+  /* Radius */
+  --radius-small: 8px;
+  --radius-large: 32px;
+  --radius-pill: 22px;
+
+  /* Typography */
+  --font-display: 'Aktiv Grotesk Ex Basic App', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-system: 'SF Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+
+  --line-16: 16px;
+  --line-20: 20px;
+  --line-36: 36px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--font-display);
+  color: var(--colour-text-primary-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  /* Soft stage background so the phone frame pops on desktop */
+  background:
+    radial-gradient(1200px 800px at 20% 0%, #f4f1ec 0%, transparent 60%),
+    radial-gradient(1200px 800px at 100% 100%, #e9eef9 0%, transparent 60%),
+    #f3f3f5;
+}
+
+button {
+  font-family: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}

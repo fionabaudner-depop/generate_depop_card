@@ -1,0 +1,158 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { StatusBar } from "./StatusBar";
+import { HomeIndicator } from "./HomeIndicator";
+import styles from "./BalanceScreen.module.css";
+
+type Props = {
+  onBack: () => void;
+};
+
+export function BalanceScreen({ onBack }: Props) {
+  return (
+    <div className={styles.screen}>
+      <StatusBar />
+      <div className={styles.statusBarSpacer} aria-hidden="true" />
+
+      <div className={styles.navBar}>
+        <button type="button" className={styles.backBtn} aria-label="Back" onClick={onBack}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path
+              d="M12.5 4.5L6.5 10l6 5.5"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        <h1 className={styles.title}>Depop Balance</h1>
+      </div>
+
+      <div className={styles.cardWrap}>
+        {/* Reserved space — the actual card is rendered by the page-level CardLayer
+            so it can morph from the result screen's avatar position. */}
+        <div className={styles.cardSlot} aria-hidden="true" />
+      </div>
+
+      <div className={styles.withdrawWrap}>
+        <button type="button" className={styles.withdraw}>
+          Withdraw
+        </button>
+      </div>
+
+      <div className={styles.thickDivider} aria-hidden="true" />
+
+      <div className={styles.transactions}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Latest transactions</h2>
+          <button type="button" className={styles.seeAll}>
+            See all
+          </button>
+        </div>
+
+        <div className={styles.dateLabel}>Monday, 10 November</div>
+
+        <button type="button" className={styles.tx}>
+          <span className={styles.txAvatarWrap} aria-hidden="true">
+            <span className={styles.txAvatar} />
+            <span className={styles.txBadge}>
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                <path d="M1.5 4.2L3.2 5.8 6.5 2.4" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </span>
+          <span className={styles.txMain}>
+            <span className={styles.txTitle}>Sold</span>
+            <span className={styles.txDesc}>Item description</span>
+            <span className={styles.txMeta}>Paid</span>
+          </span>
+          <span className={styles.txAmount}>+$30.00</span>
+        </button>
+      </div>
+
+      <TabBar />
+      <HomeIndicator />
+    </div>
+  );
+}
+
+function TabBar() {
+  return (
+    <div className={styles.tabBar} aria-hidden="true">
+      <Tab label="Home" icon={<IconHome filled />} />
+      <Tab label="Discover" icon={<IconSearch />} />
+      <Tab label="Sell" icon={<IconSell />} />
+      <Tab label="Inbox" icon={<IconInbox />} />
+      <Tab label="My Depop" icon={<IconProfile />} selected withBadge />
+    </div>
+  );
+}
+
+function Tab({
+  label,
+  icon,
+  selected = false,
+  withBadge = false,
+}: {
+  label: string;
+  icon: ReactNode;
+  selected?: boolean;
+  withBadge?: boolean;
+}) {
+  return (
+    <div className={`${styles.tab} ${selected ? styles.tabSelected : ""}`}>
+      <span className={styles.tabIcon}>{icon}</span>
+      <span className={styles.tabLabel}>{label}</span>
+      {withBadge && <span className={styles.tabBadge} />}
+    </div>
+  );
+}
+
+function IconHome({ filled = false }: { filled?: boolean }) {
+  return filled ? (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 3l9 7v11h-6v-7H9v7H3V10z" />
+    </svg>
+  ) : (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M3 10l9-7 9 7v11h-6v-7H9v7H3z" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconSearch() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="M16 16l4 4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconSell() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M12 5v14M5 12h14" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconInbox() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M3 6h18v12H3z" strokeLinejoin="round" />
+      <path d="M3 6l9 7 9-7" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconProfile() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c1-4 4-6 8-6s7 2 8 6" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}

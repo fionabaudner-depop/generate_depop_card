@@ -1,0 +1,207 @@
+/*
+ * Splash — matches Figma Payments 2026 / Intro splash (13660:41194).
+ * Frame: 375 × 844, full-bleed Secondary gradient/Blue (#fbf6f1 → #e2e8f7).
+ * Main content: 32px horizontal padding (xLarge), 48px vertical (xxLarge), 24px gap (Large).
+ * Hero: 201 × 185 (card image 201 × 151 + 34px shadow strip).
+ */
+
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fbf6f1 0%, #e2e8f7 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* The StatusBar component is position:absolute on top — reserve the 44px. */
+.statusBarSpacer {
+  height: 44px;
+  flex-shrink: 0;
+}
+
+/* iOS-Standard nav row containing the close (X) icon. */
+.navRow {
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 4px 16px;
+}
+
+.closeBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--colour-text-primary-base);
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(38, 38, 38, 0.06);
+}
+
+.closeBtn:active {
+  transform: scale(0.92);
+}
+
+/* Main content: matches Figma 311px inner width via 32px horizontal padding. */
+.main {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 32px 0;
+  gap: 24px;
+  position: relative;
+}
+
+/* Hero: 201 × 185 (card image + shadow strip), no rotation. */
+.heroWrap {
+  position: relative;
+  width: 201px;
+  height: 185px;
+  flex-shrink: 0;
+  animation: splashFloat 4.8s ease-in-out infinite;
+  transform-origin: 50% 60%;
+  will-change: transform;
+}
+
+@keyframes splashFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* When the user taps Get started, the card "pops" before the screen transition. */
+.heroWrapPressed {
+  animation: cardPop 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes cardPop {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  35% {
+    transform: translateY(-14px) scale(1.06) rotate(-2deg);
+  }
+  100% {
+    transform: translateY(-18px) scale(1.04) rotate(0deg);
+  }
+}
+
+.heroImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 201px;
+  height: 151px;
+  object-fit: contain;
+}
+
+/* The 34px "Inventory" shadow strip directly under the card. */
+.heroShadow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(38, 50, 80, 0.22), transparent 70%);
+  filter: blur(3px);
+}
+
+/* Content header — 311 wide, centered text. */
+.copy {
+  width: 100%;
+  max-width: 311px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  text-align: center;
+  animation: fadeUp 0.55s ease 0.05s both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 44px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+.subtitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+/* CTA pinned to the bottom of the screen, full width. */
+.cta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 16px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+.primary {
+  width: 100%;
+  background: var(--colour-surface-button-primary-enabled);
+  color: var(--colour-text-button-primary);
+  border-radius: var(--radius-pill);
+  padding: 12px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-20);
+  letter-spacing: 0.012em;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.primary:active {
+  transform: scale(0.985);
+}
+
+/* Spacer so the bottom of `.main` doesn't sit underneath the CTA + home indicator. */
+.ctaSpacer {
+  height: 110px;
+  flex-shrink: 0;
+}

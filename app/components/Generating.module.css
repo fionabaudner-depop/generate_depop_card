@@ -1,0 +1,155 @@
+/*
+ * Generating screen.
+ * Slow reveal: the user's chosen vibe illustration grows and gathers light,
+ * while a progress bar fills underneath. No spinner — the illustration *is* the loader.
+ * The "big bang" reveal happens on the next screen (ResultCard).
+ */
+
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fbf6f1 0%, #e2e8f7 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.statusBarSpacer {
+  height: 88px;
+  flex-shrink: 0;
+}
+
+/* Stage with the illustration as the visual loader. */
+.stage {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32px;
+  gap: 32px;
+}
+
+.illoWrap {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Coloured glow behind the illustration that intensifies as progress fills. */
+.glow {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    var(--vibe-glow, rgba(255, 35, 0, 0.35)) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  opacity: var(--glow-opacity, 0);
+  transition: opacity 0.2s linear;
+  filter: blur(2px);
+}
+
+.illo {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  transform-origin: center;
+  filter: drop-shadow(0 22px 24px rgba(40, 50, 80, 0.18));
+  transition: transform 0.18s ease-out;
+  animation: illoFloat 4.5s ease-in-out infinite;
+}
+
+@keyframes illoFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+}
+
+/* Progress bar — minimal, full-width inside the 311px content. */
+.progress {
+  width: 100%;
+  max-width: 311px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 6px;
+  background: rgba(38, 38, 38, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--colour-surface-primary-base);
+  border-radius: 999px;
+  /* Width is driven by inline style from JS. */
+  transition: width 80ms linear;
+  position: relative;
+}
+
+/* Subtle shimmer riding the leading edge of the bar. */
+.progressFill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 24px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 100%);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+  text-align: center;
+}
+
+.subtitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colour-text-primary-subtle);
+  text-align: center;
+  min-height: 20px;
+  transition: opacity 0.2s ease;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  max-width: 280px;
+  text-align: center;
+}
+
+.footerSpacer {
+  height: 64px;
+  flex-shrink: 0;
+}

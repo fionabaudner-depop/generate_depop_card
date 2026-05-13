@@ -1,0 +1,35 @@
+.stage {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.phone {
+  position: relative;
+  width: 375px;
+  /* iPhone 14-ish, but scoped to the design height */
+  height: 812px;
+  background: var(--colour-background-base);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 10px #111,
+    0 30px 60px -20px rgba(0, 0, 0, 0.35),
+    0 10px 30px -10px rgba(0, 0, 0, 0.2);
+  isolation: isolate;
+}
+
+/* When viewed on a true mobile device, drop the bezel and fill the screen. */
+@media (max-width: 480px) {
+  .stage {
+    padding: 0;
+  }
+  .phone {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}

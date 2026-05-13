@@ -1,0 +1,287 @@
+/*
+ * Depop Balance screen — Figma Payments 2026 / Depop Balance / Shop with balance / Enabled (13662:572362).
+ * The hero balance card is themed with the vibe the user just generated.
+ */
+
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--colour-background-base);
+  display: flex;
+  flex-direction: column;
+}
+
+.statusBarSpacer {
+  height: 44px;
+  flex-shrink: 0;
+}
+
+/* iOS-Standard nav bar: back chevron (left) + centered title. */
+.navBar {
+  position: relative;
+  height: 44px;
+  flex-shrink: 0;
+  background: var(--colour-surface-primary-inverted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.backBtn {
+  position: absolute;
+  left: 16px;
+  top: 4px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--colour-surface-primary-base);
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.backBtn:hover {
+  background: rgba(38, 38, 38, 0.06);
+}
+
+.backBtn:active {
+  transform: scale(0.92);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.012em;
+  color: var(--colour-surface-primary-base);
+}
+
+/* ---------- Card hero (slot only — actual card rendered by CardLayer) ---------- */
+.cardWrap {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  flex-shrink: 0;
+}
+
+.cardSlot {
+  width: 285px;
+  height: 178px;
+}
+
+/* ---------- Withdraw CTA ---------- */
+.withdrawWrap {
+  padding: 0 14px;
+  flex-shrink: 0;
+}
+
+.withdraw {
+  width: 100%;
+  background: var(--colour-surface-button-primary-enabled);
+  color: var(--colour-text-button-primary);
+  border-radius: var(--radius-pill);
+  padding: 12px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.012em;
+  transition: transform 0.18s ease;
+}
+
+.withdraw:active {
+  transform: scale(0.985);
+}
+
+/* ---------- Transactions ---------- */
+.thickDivider {
+  margin-top: 24px;
+  height: 4px;
+  background: #d7d7d7;
+  flex-shrink: 0;
+}
+
+.transactions {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--colour-surface-primary-inverted);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 24px 16px 8px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+.seeAll {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--colour-text-primary-base);
+}
+
+.dateLabel {
+  padding: 0 16px;
+  font-family: "GT America", var(--font-display);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--colour-text-primary-subtle);
+  margin-bottom: 8px;
+}
+
+.tx {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--colour-surface-primary-inverted);
+  width: 100%;
+  text-align: left;
+}
+
+.txAvatarWrap {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.txAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background:
+    repeating-conic-gradient(#d9d9d9 0% 25%, #ffffff 0% 50%) 50% / 8px 8px,
+    #eaeaea;
+}
+
+.txBadge {
+  position: absolute;
+  bottom: -2px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #297f00;
+  border: 1px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.txMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.txTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colour-text-primary-base);
+}
+
+.txDesc {
+  font-family: "GT America", var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #43484d;
+}
+
+.txMeta {
+  font-family: "GT America", var(--font-display);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--colour-text-primary-subtle);
+}
+
+.txAmount {
+  font-family: "GT America", var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #297f00;
+  margin-right: 16px;
+}
+
+/* ---------- Tab bar ---------- */
+.tabBar {
+  flex-shrink: 0;
+  border-top: 1px solid var(--colour-border-divider-weak);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 8px 16px 0;
+  background: var(--colour-background-base);
+}
+
+.tab {
+  flex: 1;
+  height: 49px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1px;
+  color: var(--colour-text-primary-base);
+  position: relative;
+}
+
+.tabIcon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tabLabel {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.012em;
+}
+
+.tabSelected .tabLabel {
+  font-weight: 700;
+}
+
+.tabBadge {
+  position: absolute;
+  top: 5px;
+  right: calc(50% - 16px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e81f00;
+}

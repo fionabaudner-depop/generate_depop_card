@@ -1,0 +1,32 @@
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px 0 32px;
+  z-index: 10;
+  pointer-events: none;
+  color: var(--colour-surface-primary-base);
+}
+
+.time {
+  font-family: var(--font-system);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.3px;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 12px;
+}
+
+.icons svg {
+  display: block;
+}
