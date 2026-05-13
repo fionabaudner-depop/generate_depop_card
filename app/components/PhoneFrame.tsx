@@ -4,7 +4,9 @@ import styles from "./PhoneFrame.module.css";
 export function PhoneFrame({ children }: { children: ReactNode }) {
   return (
     <div className={styles.stage}>
-      <div className={styles.phone}>{children}</div>
+      <div className={styles.fit}>
+        <div className={styles.phone}>{children}</div>
+      </div>
     </div>
   );
 }

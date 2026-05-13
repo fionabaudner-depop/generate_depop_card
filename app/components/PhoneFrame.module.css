@@ -1,15 +1,34 @@
+/*
+ * The phone is designed at the iPhone reference size (375 × 812) so that all
+ * internal coordinates (CardLayer slot positions, hero card placement, etc.)
+ * stay accurate. On desktop we visually scale it down with a CSS transform so
+ * the whole frame comfortably fits a 15" MacBook viewport (~730-820px tall
+ * after browser chrome). `.fit` reserves the scaled box in layout flow, while
+ * `.phone` stays 375 × 812 internally.
+ *
+ * `--phone-scale` is defined globally in `app/globals.css`.
+ */
+
 .stage {
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  padding: 16px;
+}
+
+.fit {
+  position: relative;
+  width: calc(375px * var(--phone-scale));
+  height: calc(812px * var(--phone-scale));
+  flex-shrink: 0;
 }
 
 .phone {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 375px;
-  /* iPhone 14-ish, but scoped to the design height */
   height: 812px;
   background: var(--colour-background-base);
   border-radius: 44px;
@@ -19,17 +38,25 @@
     0 30px 60px -20px rgba(0, 0, 0, 0.35),
     0 10px 30px -10px rgba(0, 0, 0, 0.2);
   isolation: isolate;
+  transform: scale(var(--phone-scale));
+  transform-origin: 0 0;
 }
 
-/* When viewed on a true mobile device, drop the bezel and fill the screen. */
+/* On a real mobile device, drop the bezel and fill the screen. */
 @media (max-width: 480px) {
   .stage {
     padding: 0;
   }
+  .fit {
+    width: 100%;
+    height: 100dvh;
+  }
   .phone {
+    position: relative;
     width: 100%;
     height: 100dvh;
     border-radius: 0;
     box-shadow: none;
+    transform: none;
   }
 }

@@ -44,6 +44,32 @@
   --line-16: 16px;
   --line-20: 20px;
   --line-36: 36px;
+
+  /* PhoneFrame scale — keeps the 375 × 812 iPhone reference but shrinks the
+     visual on desktop so it fits a 15" MacBook viewport. Mobile widths reset
+     this to 1 to fill the screen (handled in PhoneFrame.module.css). */
+  --phone-scale: 0.82;
+}
+
+/* Smaller laptop heights — shrink a bit more so the phone still has breathing
+   room above and below. */
+@media (max-height: 760px) {
+  :root {
+    --phone-scale: 0.74;
+  }
+}
+
+@media (max-height: 640px) {
+  :root {
+    --phone-scale: 0.65;
+  }
+}
+
+/* True mobile widths: full-bleed, no scaling. */
+@media (max-width: 480px) {
+  :root {
+    --phone-scale: 1;
+  }
 }
 
 * {

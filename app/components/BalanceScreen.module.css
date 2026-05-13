@@ -240,7 +240,10 @@
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  padding: 8px 16px 0;
+  /* Bottom padding reserves room for the absolute HomeIndicator so the tab
+     labels don't get covered (matches Figma's 49px tab area + 34px home
+     indicator gutter = 83px tab bar). */
+  padding: 8px 16px 34px;
   background: var(--colour-background-base);
 }
 
