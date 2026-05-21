@@ -13,6 +13,9 @@ import styles from "./page.module.css";
 type Step = "balance" | "designs";
 
 const TRANSITION_MS = 460;
+// How long the post-save card flip-in animation takes; we use it to clear the
+// `didJustSave` flag so the flip only plays once per save.
+const FLIP_RESET_MS = 1200;
 
 export default function CustomCardSelectorPage() {
   const [step, setStep] = useState<Step>("balance");
@@ -27,11 +30,21 @@ export default function CustomCardSelectorPage() {
   const [previewDesignId, setPreviewDesignId] = useState(savedDesignId);
   const [previewVariantId, setPreviewVariantId] = useState(savedVariantId);
 
+  // Set when the user has just saved a new design — drives the flip-in
+  // animation on the balance card. Reset shortly after so it only plays once.
+  const [didJustSave, setDidJustSave] = useState(false);
+
   useEffect(() => {
     if (!outgoing) return;
     const t = window.setTimeout(() => setOutgoing(null), TRANSITION_MS);
     return () => window.clearTimeout(t);
   }, [outgoing]);
+
+  useEffect(() => {
+    if (!didJustSave) return;
+    const t = window.setTimeout(() => setDidJustSave(false), FLIP_RESET_MS);
+    return () => window.clearTimeout(t);
+  }, [didJustSave]);
 
   const goTo = useCallback(
     (next: Step) => {
@@ -65,6 +78,7 @@ export default function CustomCardSelectorPage() {
     }
     setSavedDesignId(previewDesignId);
     setSavedVariantId(previewVariantId);
+    setDidJustSave(true);
     goTo("balance");
   }, [goTo, previewDesignId, previewVariantId]);
 
@@ -85,6 +99,7 @@ export default function CustomCardSelectorPage() {
           <CustomBalanceScreen
             variant={getVariant(savedDesignId, savedVariantId)}
             badge={savedDesign.earned ?? null}
+            flipOnEntry={didJustSave}
             onCustomise={handleCustomise}
             onBack={handleBackFromBalance}
           />

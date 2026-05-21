@@ -11,11 +11,19 @@ type Props = {
   variant: CardVariant;
   /** Optional achievement badge stamped on the saved card (earned designs). */
   badge?: { icon: BadgeIconId; label: string } | null;
+  /** Play the flip-in animation when the screen mounts (e.g. just saved). */
+  flipOnEntry?: boolean;
   onCustomise: () => void;
   onBack: () => void;
 };
 
-export function CustomBalanceScreen({ variant, badge, onCustomise, onBack }: Props) {
+export function CustomBalanceScreen({
+  variant,
+  badge,
+  flipOnEntry = false,
+  onCustomise,
+  onBack,
+}: Props) {
   return (
     <div className={styles.screen}>
       <StatusBar />
@@ -36,10 +44,14 @@ export function CustomBalanceScreen({ variant, badge, onCustomise, onBack }: Pro
         <h1 className={styles.title}>Depop Balance</h1>
       </div>
 
-      {/* Card hero — the customise icon overlaps the bottom-right corner. */}
+      {/* Card hero — the customise icon overlaps the bottom-right corner.
+          A nested `cardFlipper` div is what receives the post-save flip-in
+          animation, leaving the overlapping icon button stationary. */}
       <div className={styles.cardWrap}>
         <div className={styles.cardContainer}>
-          <CustomBalanceCard variant={variant} badge={badge ?? null} />
+          <div className={`${styles.cardFlipper} ${flipOnEntry ? styles.cardFlipIn : ""}`}>
+            <CustomBalanceCard variant={variant} badge={badge ?? null} />
+          </div>
           <button
             type="button"
             className={styles.customiseIconBtn}
