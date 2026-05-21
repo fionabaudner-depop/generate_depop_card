@@ -1,0 +1,200 @@
+/*
+ * The Depop balance card visual, themeable by `--card-bg` / `--card-text`.
+ * Two sizes:
+ *  - `default` matches BalanceScreen (285 x 178)
+ *  - `hero` is the slightly larger size shown inside the design carousel
+ *    (260 x 220-ish, slightly portrait-leaning, with stronger drop shadows)
+ */
+
+.card {
+  position: relative;
+  overflow: hidden;
+  /* Two-layer background:
+     - Top: a tiled noise SVG, blended over the gradient with `overlay`.
+       Adds a subtle film-grain texture to every card variant.
+     - Bottom: the per-variant gradient supplied via `--card-bg`. */
+  background:
+    url("/images/noise.svg") 0 0 / 200px 200px,
+    var(--card-bg, linear-gradient(135deg, #1a1a1a, #4a4a4a));
+  background-blend-mode: overlay, normal;
+  color: var(--card-text, #ffffff);
+  box-shadow:
+    -2px 3px 3px rgba(0, 0, 0, 0.2),
+    -1px 8px 16px rgba(0, 0, 0, 0.12);
+  transition:
+    background 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 0.4s ease;
+  isolation: isolate;
+}
+
+.default {
+  width: 285px;
+  height: 178px;
+  border-radius: 12px;
+}
+
+.hero {
+  width: 260px;
+  height: 178px;
+  border-radius: 14px;
+}
+
+/* Soft inner light. */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 80% at 0% 0%,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+/* Watermark depop logo at the bottom — matches the existing BalanceScreen treatment. */
+.watermark {
+  position: absolute;
+  top: 124px;
+  bottom: -19px;
+  left: 0;
+  right: 0;
+  -webkit-mask: url("/images/depop-watermark.svg") no-repeat left top / 100% 100%;
+          mask: url("/images/depop-watermark.svg") no-repeat left top / 100% 100%;
+  background-color: var(--card-text, #ffffff);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+/* Absolutely-positioned content blocks — matches the Figma layout coordinates
+   from the Depop Balance card (header y=44, amount y=71, divider y=109,
+   pending y=117). Avoids the line-height drift that shifts everything down
+   when laid out with margins. */
+.header {
+  position: absolute;
+  top: 44px;
+  left: 17px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "GT America", var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  z-index: 1;
+}
+
+.depop {
+  display: inline-block;
+  width: 53px;
+  height: 14px;
+  -webkit-mask: url("/images/depop-wordmark.svg") no-repeat left center / 100% 100%;
+          mask: url("/images/depop-wordmark.svg") no-repeat left center / 100% 100%;
+  background-color: var(--card-text, #ffffff);
+}
+
+.amount {
+  position: absolute;
+  top: 71px;
+  left: 17px;
+  font-family: "GT America", var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  z-index: 1;
+  /* Embossed plastic feel: a faint light highlight up top suggests a raised
+     edge catching light, the soft dark shadow below suggests it casting
+     shadow onto the card surface. Works for both white-on-dark and
+     dark-on-light variants because both shadows are translucent and
+     proportional. */
+  text-shadow:
+    0 -0.6px 0 rgba(255, 255, 255, 0.22),
+    0 1px 1.5px rgba(0, 0, 0, 0.34);
+}
+
+.divider {
+  position: absolute;
+  top: 109px;
+  left: 17px;
+  width: 252px;
+  height: 0.5px;
+  background: var(--card-text, #ffffff);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.pending {
+  position: absolute;
+  top: 117px;
+  left: 17px;
+  font-family: "GT America", var(--font-display);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  opacity: 0.95;
+  z-index: 1;
+}
+
+/* Achievement badge slot — used by earned cards. Sits in the top-right of the
+   card where a chip would normally be. Inherits the card's text colour via
+   `currentColor` so it always reads against the gradient. */
+.badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 5px 8px 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: var(--card-text, #ffffff);
+  z-index: 2;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.badgeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  line-height: 1;
+}
+
+.badgeLabel {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 8px;
+  line-height: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Subtle shimmer reserved for `hero` variant (it sits in a carousel and benefits
+   from a livelier surface). */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  animation: heroSheen 4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s infinite;
+  pointer-events: none;
+}
+
+@keyframes heroSheen {
+  to {
+    transform: translateX(120%);
+  }
+}

@@ -1,47 +1,327 @@
-.scene {
+/*
+ * Dashboard — entry point listing every prototype variation of the
+ * Customise Balance Card explorations.
+ */
+
+.shell {
+  min-height: 100dvh;
+  padding: clamp(48px, 8vh, 96px) 24px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 880px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--colour-text-primary-subtle);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.15;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+  max-width: 700px;
+}
+
+.subtitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--colour-text-primary-subtle);
+  max-width: 580px;
+}
+
+/* ---------- Grid ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.card {
   position: relative;
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--colour-surface-primary-inverted);
+  border: 1px solid var(--colour-border-card-weak);
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.layer {
+.card:hover {
+  transform: translateY(-4px);
+  border-color: #c8c8c8;
+  box-shadow:
+    0 18px 32px -16px rgba(0, 0, 0, 0.18),
+    0 4px 10px -4px rgba(0, 0, 0, 0.08);
+}
+
+.card:active {
+  transform: translateY(-2px) scale(0.997);
+}
+
+.card.comingSoon {
+  background: var(--colour-surface-primary-weak);
+}
+
+/* ---------- Preview ---------- */
+.preview {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fbf6f1 0%, #e2e8f7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewVibe {
+  background:
+    radial-gradient(70% 60% at 50% 40%, rgba(255, 35, 0, 0.18) 0%, rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, #fbf6f1 0%, #e2e8f7 100%);
+}
+
+.previewCustom {
+  background: linear-gradient(180deg, #ecebf5 0%, #d8d4ee 100%);
+}
+
+/* Mini-card "thumbnail" inside the preview */
+.miniCard {
+  width: 60%;
+  aspect-ratio: 285 / 178;
+  border-radius: 10px;
+  box-shadow:
+    -1px 2px 3px rgba(0, 0, 0, 0.18),
+    -1px 6px 14px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  transform: rotate(-4deg);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover .miniCard {
+  transform: rotate(0deg) translateY(-2px);
+}
+
+.miniCardVibe {
+  background: linear-gradient(135deg, #ff2300 0%, #1a1a1a 100%);
+}
+
+.miniCardCustom {
+  background:
+    linear-gradient(135deg, #ff6fb5 0%, #7a1fa2 60%, #1a1a1a 100%);
+}
+
+.miniLogo {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 10%;
+  left: 8%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
-/* The screen that just mounted slides up + fades in. */
-.entering {
-  animation: layerEnter 0.46s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  z-index: 2;
+.miniChip {
+  position: absolute;
+  top: 10%;
+  right: 8%;
+  width: 22px;
+  height: 16px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #f4d68b 0%, #b78a3a 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
 }
 
-/* The previous screen fades + scales down underneath. */
-.exiting {
-  animation: layerExit 0.36s ease both;
-  z-index: 1;
-  pointer-events: none;
+.miniHandle {
+  position: absolute;
+  left: 8%;
+  bottom: 12%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: #ffffff;
 }
 
-@keyframes layerEnter {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.992);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+/* For the Custom Card preview — show colour swatches floating above the card. */
+.swatchStack {
+  position: absolute;
+  right: 14%;
+  top: 12%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-@keyframes layerExit {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(1.02);
-  }
+.swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+}
+
+.swatch:nth-child(1) {
+  background: #ff2300;
+}
+.swatch:nth-child(2) {
+  background: #1a1a1a;
+}
+.swatch:nth-child(3) {
+  background: #ff6fb5;
+}
+.swatch:nth-child(4) {
+  background: #f4d68b;
+}
+
+/* ---------- Card body ---------- */
+.body {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badgeLive {
+  background: #e8f7ed;
+  color: #297f00;
+}
+
+.badgeLive::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #297f00;
+}
+
+.badgeSoon {
+  background: rgba(255, 35, 0, 0.1);
+  color: #c61a00;
+}
+
+.badgeSoon::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c61a00;
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+.cardDescription {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colour-text-primary-subtle);
+}
+
+.cardCta {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+.cardCta svg {
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover .cardCta svg {
+  transform: translateX(3px);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footerText {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--colour-text-primary-subtle);
 }

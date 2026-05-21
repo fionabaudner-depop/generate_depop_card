@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Universal grain texture for the balance cards.
+
+  - feTurbulence generates fractal noise.
+  - feColorMatrix collapses it to a monochrome grayscale (R=G=B=avg) so the
+    result is achromatic and won't tint the card colour.
+  - feComponentTransfer compresses the range to roughly 0.25-0.75 so the noise
+    sits close to mid-grey, which means under `background-blend-mode: overlay`
+    it nudges the gradient lighter or darker by tiny amounts instead of
+    crushing the colour.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <filter id="grain" x="0%" y="0%" width="100%" height="100%">
+    <feTurbulence
+      type="fractalNoise"
+      baseFrequency="0.9"
+      numOctaves="2"
+      stitchTiles="stitch"
+      seed="7"
+    />
+    <feColorMatrix
+      type="matrix"
+      values="0.33 0.33 0.33 0 0
+              0.33 0.33 0.33 0 0
+              0.33 0.33 0.33 0 0
+              0 0 0 0 1"
+    />
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="0.5" intercept="0.25" />
+      <feFuncG type="linear" slope="0.5" intercept="0.25" />
+      <feFuncB type="linear" slope="0.5" intercept="0.25" />
+    </feComponentTransfer>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#grain)" />
+</svg>

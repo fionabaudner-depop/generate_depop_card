@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Generate your Depop card",
-  description: "Interactive prototype: pick your Depop vibe and generate a personalised card.",
+  title: "Customise Balance Card · Prototypes",
+  description:
+    "Interactive prototype variations exploring how sellers can personalise their Depop Balance card.",
 };
 
 export const viewport: Viewport = {

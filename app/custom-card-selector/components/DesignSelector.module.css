@@ -1,0 +1,494 @@
+/* Wise-inspired "Select a design" screen:
+   horizontal drag-and-snap card carousel + variant picker + Save CTA. */
+
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--colour-background-base);
+  display: flex;
+  flex-direction: column;
+}
+
+.statusBarSpacer {
+  height: 44px;
+  flex-shrink: 0;
+}
+
+/* ---------- Top nav ---------- */
+.nav {
+  position: relative;
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.iconBtn {
+  position: absolute;
+  top: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--colour-surface-primary-weak);
+  color: var(--colour-surface-primary-base);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.iconBtn:hover {
+  background: rgba(38, 38, 38, 0.1);
+}
+
+.iconBtn:active {
+  transform: scale(0.94);
+}
+
+.backBtn {
+  left: 16px;
+}
+
+.infoBtn {
+  right: 16px;
+}
+
+.navTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--colour-text-primary-base);
+}
+
+/* ---------- Carousel ---------- */
+.carouselWrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding-top: 8px;
+}
+
+/* The viewport — overflow:hidden, contains the absolutely-positioned track. */
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Allow vertical page scroll, capture horizontal swipes for our drag. */
+  touch-action: pan-y;
+  overflow: hidden;
+  /* Soft fade on the edges so peeking cards feel embedded in the screen. */
+  -webkit-mask: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+          mask: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+}
+
+.viewportDragging {
+  cursor: grabbing;
+}
+
+/* The track is centred horizontally on the active card via translateX. */
+.track {
+  position: absolute;
+  top: 21px; /* vertical centring within the 220px viewport */
+  left: 50%;
+  height: 178px;
+  display: flex;
+  gap: 16px;
+  /* The track is positioned at the centre of the viewport; we offset it
+     leftwards by half a card so the active slide centres correctly. */
+  transform: translateX(calc(-130px + var(--track-x, 0px)));
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+}
+
+.trackDragging {
+  transition: none;
+}
+
+.slide {
+  flex-shrink: 0;
+  width: 260px;
+  height: 178px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Each slide reads its own --slide-distance prop from the parent component
+     and applies a scaled/rotated transform so adjacent cards visually recede. */
+  transform: scale(var(--slide-scale, 1)) rotate(var(--slide-rotate, 0deg));
+  opacity: var(--slide-opacity, 1);
+  transition:
+    transform 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  pointer-events: none;
+}
+
+.trackDragging .slide {
+  transition: none;
+}
+
+.slideCardWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The card itself is desaturated when locked so the gradient still hints at
+   the design but recedes behind the lock overlay. */
+.slideCardLocked {
+  filter: saturate(0.7) brightness(0.85);
+}
+
+/* Lock overlay sits centred over the active locked slide. */
+.lockOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(20, 20, 24, 0.32);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: none;
+  animation: lockOverlayIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes lockOverlayIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lockBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--colour-text-primary-base);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.lockGlyph {
+  display: block;
+}
+
+/* Tiny pop when a new slide settles. */
+.slideJustSettled {
+  animation: slideSettle 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideSettle {
+  0% { transform: scale(1) rotate(0deg); }
+  40% { transform: scale(1.04) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Dots */
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(38, 38, 38, 0.2);
+  padding: 0;
+  border: 0;
+  transition: background 0.2s ease, width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dotActive {
+  background: var(--colour-surface-primary-base);
+  width: 18px;
+  border-radius: 4px;
+}
+
+/* ---------- Detail panel ---------- */
+.detail {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px 24px 0;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+/* Crossfade content as the active design changes. */
+.detailContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: detailIn 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes detailIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.designName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+.designDescription {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colour-text-primary-subtle);
+  max-width: 280px;
+}
+
+.availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+}
+
+.availabilityNeutral {
+  background: rgba(38, 38, 38, 0.08);
+  color: var(--colour-text-primary-base);
+}
+
+.availabilityLimited {
+  background: rgba(226, 0, 32, 0.1);
+  color: #c61a00;
+}
+
+.availabilityLimited::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c61a00;
+}
+
+.availabilityNew {
+  background: linear-gradient(135deg, #fff7e6, #ffe0f0);
+  color: var(--colour-text-primary-base);
+  box-shadow: inset 0 0 0 1px rgba(38, 38, 38, 0.06);
+}
+
+.availabilityNew::before {
+  content: "✦";
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* ---------- Variant swatches ---------- */
+.variantsWrap {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.variants {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.variants::-webkit-scrollbar {
+  display: none;
+}
+
+.variantTrack {
+  display: flex;
+  gap: 14px;
+  padding: 4px 16px 12px;
+  /* Centre when there's space, fall back to flex-start when it overflows
+     so the first swatch never gets cut off on the left. */
+  justify-content: safe center;
+  min-width: 100%;
+}
+
+.variantBtn {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  animation: variantIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--variant-delay, 0ms);
+}
+
+@keyframes variantIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  background: var(--swatch-bg, #ccc);
+  position: relative;
+  transition:
+    transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.18s ease;
+}
+
+.variantBtn:hover .swatch {
+  transform: scale(1.05);
+}
+
+.variantSelected .swatch {
+  box-shadow:
+    0 0 0 2px var(--colour-surface-primary-base),
+    0 4px 10px -4px rgba(0, 0, 0, 0.18);
+}
+
+.variantSelected .swatch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M3 8.5L6.5 12L13 5' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>")
+      center / 18px no-repeat;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+
+.variantLabel {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.012em;
+  color: var(--colour-text-primary-base);
+}
+
+/* ---------- Footer / CTA ---------- */
+.footer {
+  flex-shrink: 0;
+  padding: 12px 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--colour-border-divider-weak);
+}
+
+.cta {
+  width: 100%;
+  padding: 0 0 34px;
+}
+
+.primary {
+  width: 100%;
+  background: var(--colour-surface-button-primary-enabled);
+  color: var(--colour-text-button-primary);
+  border-radius: var(--radius-pill);
+  padding: 14px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.012em;
+  transition: transform 0.18s ease;
+}
+
+.primary:active {
+  transform: scale(0.985);
+}
+
+/* Locked CTA replaces the primary save button when the active card is locked.
+   It looks pressable but is disabled — communicates progress, not action. */
+.lockedCta {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--colour-surface-primary-weak);
+  color: var(--colour-text-primary-subtle);
+  border-radius: var(--radius-pill);
+  padding: 14px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.012em;
+  cursor: not-allowed;
+  border: 1px dashed rgba(38, 38, 38, 0.18);
+}
